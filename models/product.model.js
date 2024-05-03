@@ -1,55 +1,62 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const productSchema = mongoose.Schema(
     {
-        name: {
+        tile: {
             type: String,
             required: true,
+        },
+        slug: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
         },
         description: {
             type: String,
             required: true,
-            minlength: 10,
-        },
-        picture: {
-            type: String,
-            required: true,
-        },
-        picture_info: {
-            public_key: String,
-            file_name: String,
-        },
-        status: {
-            type: Boolean,
-            default: true,
         },
         price: {
             type: Number,
             required: true,
         },
-        stock: {
+        category: {
+            type: String,
+            required: true,
+        },
+        brand: {
+            type: String,
+            required: true,
+        },
+        quantity: {
             type: Number,
             required: true,
         },
-        feature: {
-            type: Boolean,
-            enum: [true, false],
-            default: false,
+        sold: {
+            type: Number,
+            default: 0,
         },
-        brand: {
-            type: mongoose.Types.ObjectId,
-            ref: 'Brand',
-            required: true,
-        },
-        category: {
-            type: mongoose.Types.ObjectId,
-            ref: 'Category',
-            required: true,
+        images: [
+            {
+                public_id: String,
+                url: String,
+            },
+        ],
+        color: [],
+        tags: String,
+        ratings: [
+            {
+                star: Number,
+                comment: String,
+                postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            },
+        ],
+        totalRating: {
+            type: String,
+            default: 0,
         },
     },
     { timestamps: true },
 );
 
-const Product = mongoose.model('Product', productSchema);
-
-export default Product;
+module.exports = mongoose.model('Product', productSchema);
