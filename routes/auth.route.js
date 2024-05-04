@@ -21,6 +21,11 @@ const {
     getUserCart,
     emptyCart,
     applyCoupon,
+    createOrder,
+    getOrders,
+    getAllOrders,
+    getOrderByUserId,
+    updateOrderStatus,
 } = require('../controllers/user.controller.js');
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware.js');
 
@@ -59,5 +64,13 @@ router.post('/cart', authMiddleware, userCart);
 router.post('/cart/apply-coupon', authMiddleware, applyCoupon);
 router.get('/cart', authMiddleware, getUserCart);
 router.delete('/empty-cart', authMiddleware, emptyCart);
+
+// order
+router.post('/cart/cash-order', authMiddleware, createOrder);
+router.get('/get-orders', authMiddleware, getOrders);
+router.get('/get-all-orders', authMiddleware, isAdmin, getAllOrders);
+router.post('/get-order-by-user/:id', authMiddleware, isAdmin, getOrderByUserId);
+
+router.put('/order/update-order/:id', authMiddleware, isAdmin, updateOrderStatus);
 
 module.exports = router;

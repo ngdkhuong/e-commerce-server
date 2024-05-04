@@ -513,6 +513,41 @@ const getAllOrders = asyncHandler(async (req, res) => {
     }
 });
 
+const getOrderByUserId = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    validateMongoDbId(id);
+
+    try {
+        const userOrders = await Order.findOne({ orderby: id }).populate('products.product').populate('orderby').exec();
+
+        res.json(userOrders);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const updateOrderStatus = asyncHandler(async (req, res) => {
+    const { status } = req.body;
+    const { id } = req.params;
+    validateMongoDbId(id);
+    try {
+        const updateOrderStatus = await Order.findByIdAndUpdate(
+            id,
+            {
+                orderStatus: status,
+                paymentIntent: {
+                    status: status,
+                },
+            },
+            { new: true },
+        );
+
+        res.json(updateOrderStatus);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
 module.exports = {
     registerUser,
     loginUser,
@@ -535,5 +570,8 @@ module.exports = {
     emptyCart,
     applyCoupon,
     createOrder,
+    getOrders,
     getAllOrders,
+    getOrderByUserId,
+    updateOrderStatus,
 };
