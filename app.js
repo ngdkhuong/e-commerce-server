@@ -9,7 +9,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const authRouter = require('./routes/auth.route');
-// const productRouter = require('./routes/productRoute');
+const productRouter = require('./routes/product.route');
 // const blogRouter = require('./routes/blogRoute');
 // const categoryRouter = require('./routes/prodcategoryRoute');
 // const blogcategoryRouter = require('./routes/blogCatRoute');
@@ -28,6 +28,7 @@ app.use(cookieParser());
 
 // route
 app.use('/api/user', authRouter);
+app.use('/api/product', productRouter);
 
 const port = process.env.PORT || 5000;
 

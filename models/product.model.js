@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const productSchema = mongoose.Schema(
     {
-        tile: {
+        title: {
             type: String,
             required: true,
         },
