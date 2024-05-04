@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'); // Erase if already required
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
 const userSchema = mongoose.Schema(
@@ -13,11 +13,6 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
             unique: true,
-            validate(value) {
-                if (!this.validate.isEmail(value)) {
-                    throw new Error('Not valid email address');
-                }
-            },
         },
         mobile: {
             type: String,
@@ -63,19 +58,21 @@ const userSchema = mongoose.Schema(
 
 // hash password before uploading to mongodb
 userSchema.pre('save', async function (next) {
-    const user = this;
-    if (!user.isModified('password')) return next();
-    user.password = bcrypt.hash(user.password, 10);
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSaltSync(10);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
 });
 
 // check match password
-userSchema.methods.isMatchedPassword = async function (enteredPassword) {
+userSchema.methods.isPasswordMatched = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // reset password tokens
-userSchema.methods.createPasswordRestToken = async function () {
+userSchema.methods.createPasswordResetToken = async function () {
     const resetToken = crypto.randomBytes(32).toString('hex');
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     this.passwordResetExpires = Date.now() + 30 * 60 * 1000; // 10 minutes
