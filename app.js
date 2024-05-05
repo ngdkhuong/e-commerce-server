@@ -11,13 +11,13 @@ const cors = require('cors');
 const authRouter = require('./routes/auth.route');
 const productRouter = require('./routes/product.route');
 // const blogRouter = require('./routes/blogRoute');
-// const categoryRouter = require('./routes/prodcategoryRoute');
+const categoryRouter = require('./routes/prodCategory.route');
 // const blogcategoryRouter = require('./routes/blogCatRoute');
 // const brandRouter = require('./routes/brandRoute');
 // const colorRouter = require('./routes/colorRoute');
 // const enqRouter = require('./routes/enqRoute');
-// const couponRouter = require('./routes/couponRoute');
-// const uploadRouter = require('./routes/uploadRoute');
+const couponRouter = require('./routes/coupon.route');
+const uploadRouter = require('./routes/upload.route');
 
 dbConnect();
 app.use(morgan('dev'));
@@ -29,6 +29,9 @@ app.use(cookieParser());
 // route
 app.use('/api/user', authRouter);
 app.use('/api/product', productRouter);
+app.use('/api/upload', uploadRouter);
+app.use('/api/coupon', couponRouter);
+app.use('/api/category', categoryRouter);
 
 const port = process.env.PORT || 5000;
 
