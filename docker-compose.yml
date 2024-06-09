@@ -2,12 +2,15 @@ version: '3.8'
 
 services:
     app:
-        image: e-commerce-server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: sukablyat007/ecommerce-server:latest
         working_dir: /app
         volumes:
             - .:/app
         ports:
-            - '3000:3000'
+            - '5000:5000'
         command: npm start
         environment:
             - NODE_ENV=development

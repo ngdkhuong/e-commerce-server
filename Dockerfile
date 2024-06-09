@@ -1,5 +1,5 @@
 # Use the official Node.js image from the Docker Hub, specify the version
-FROM node:20-alpine
+FROM node:20-alpine3.20
 
 # Set the working directory inside the container
 WORKDIR /app
